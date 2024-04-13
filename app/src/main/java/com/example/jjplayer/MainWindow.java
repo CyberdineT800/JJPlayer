@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.jjplayer.databinding.ActivityMainWindowBinding;
+import com.example.jjplayer.ui.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainWindow extends AppCompatActivity {
@@ -78,8 +80,23 @@ public class MainWindow extends AppCompatActivity {
         }
         catch (Exception e) {
             Log.e("Set text color error", "Error: " + e.getMessage(), e);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
+
+        usernameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = getString(R.string.nav_header_username);
+
+                if (username.equals("Not registered")) {
+                    Intent intent = new Intent(MainWindow.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    // Create and show a Toast
+                    Toast.makeText(getApplicationContext(), getString(R.string.already_registered), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
