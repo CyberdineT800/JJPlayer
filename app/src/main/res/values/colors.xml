@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="not_registered_color">#FF0112</color>"
     <color name="registered_color">#FFFBF0</color>"
+
+    <color name="colorPrimary">#01A5FB</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="yellow">#fff5f504</color>
+    <color name="red">#B71C1C</color>
 </resources>

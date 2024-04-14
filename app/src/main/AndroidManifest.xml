@@ -7,10 +7,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.JJPlayer">
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_register" />
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/main_theme" />
+
+<!--        <activity-->
+<!--            android:name=".RegisterActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_register"-->
+<!--            android:theme="@style/Theme.JJPlayer.NoActionBar" />-->
         <activity
             android:name=".MainWindow"
             android:exported="false"
