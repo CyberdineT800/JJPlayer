@@ -33,6 +33,16 @@
             android:scaleType="center"
             android:src="@drawable/baseline_arrow_circle_right_24">
         </ImageView>
+
+        <TextView
+            android:id="@+id/versionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="13dp"
+            android:textStyle="bold"
+            android:text="@string/version">
+        </TextView>
     </com.google.android.material.navigation.NavigationView>
 
 

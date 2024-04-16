@@ -60,6 +60,7 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="50dp"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/Username"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -79,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/Password"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -95,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/FirstName"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -111,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/LastName"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -127,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/Email"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>

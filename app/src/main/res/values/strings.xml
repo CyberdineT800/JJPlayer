@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">JJPlayer</string>
     <string name="j_j_player">J.J.PLAYER</string>
+    <string name="version">Current Version></string>
     <string name="title_activity_main_window">MainWindow</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

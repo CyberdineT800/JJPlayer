@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,8 +45,8 @@ import java.lang.reflect.Field;
 public class MainWindow extends AppCompatActivity {
 
     EditText reg_username, reg_password, reg_firstName, reg_lastName, reg_email;
+    TextView textViewSubtitle, usernameTextView, versionTextView;
     private AppBarConfiguration mAppBarConfiguration;
-    TextView textViewSubtitle, usernameTextView;
     private ActivityMainWindowBinding binding;
     TextInputLayout txtInLayoutRegPassword;
     NavigationView navigationView;
@@ -83,6 +85,15 @@ public class MainWindow extends AppCompatActivity {
         headerView = navigationView.getHeaderView(0);
         textViewSubtitle = headerView.findViewById(R.id.textView);
         logout_icon = findViewById(R.id.logout_icon);
+
+
+        String versionName = getVersionName(this);
+        int versionCode = getVersionCode(this);
+
+        // Display the version information
+        TextView versionTextView = findViewById(R.id.versionTextView);
+        versionTextView.setText("Version Name: " + versionName + "\nVersion Code: " + versionCode);
+
 
         // Set onClickListener on the TextView
         textViewSubtitle.setOnClickListener(new View.OnClickListener() {
@@ -294,6 +305,30 @@ public class MainWindow extends AppCompatActivity {
 
         dialog.show();
     }
+
+
+    // Method to get the version name
+    public static String getVersionName(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
+
+    // Method to get the version code
+    public static int getVersionCode(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 
     // Method to update the value of a string resource programmatically
     private void updateStringResource(int resourceId, String newValue) {
