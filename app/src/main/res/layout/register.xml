@@ -12,6 +12,7 @@
         android:background="@drawable/side_nav_bar"
         android:gravity="center_vertical"
         android:orientation="vertical"
+        app:circularflow_radiusInDP="5dp"
         app:layout_constraintBottom_toTopOf="@+id/LinearInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +33,7 @@
 
     <LinearLayout
         android:id="@+id/LinearInfo"
+        app:circularflow_radiusInDP="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -46,6 +48,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/elements_back">
@@ -63,6 +66,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtInLayoutRegPassword"
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/elements_back"
@@ -80,6 +84,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/elements_back">
@@ -95,6 +100,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/elements_back">
@@ -110,6 +116,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/elements_back">

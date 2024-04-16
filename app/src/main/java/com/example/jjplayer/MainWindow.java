@@ -2,6 +2,7 @@ package com.example.jjplayer;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,16 +42,21 @@ import java.lang.reflect.Field;
 
 public class MainWindow extends AppCompatActivity {
 
+    EditText reg_username, reg_password, reg_firstName, reg_lastName, reg_email;
     private AppBarConfiguration mAppBarConfiguration;
+    TextView textViewSubtitle, usernameTextView;
     private ActivityMainWindowBinding binding;
+    TextInputLayout txtInLayoutRegPassword;
     NavigationView navigationView;
-    View headerView;
+    NavController navController;
+    View headerView, dialogView;
+    ImageView logout_icon;
+    Button reg_register;
+    File userDataFile;
 
-    EditText username, password, reg_username, reg_password,
-            reg_firstName, reg_lastName, reg_email;
-    Button login, signUp, reg_register;
-    TextInputLayout txtInLayoutUsername, txtInLayoutPassword, txtInLayoutRegPassword;
-    CheckBox rememberMe;
+
+    AlertDialog.Builder dialogBuilder;
+    LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +74,15 @@ public class MainWindow extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_window);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_window);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
         // Find the TextView in the navigation header by its ID
         headerView = navigationView.getHeaderView(0);
-        TextView textViewSubtitle = headerView.findViewById(R.id.textView);
-
+        textViewSubtitle = headerView.findViewById(R.id.textView);
+        logout_icon = findViewById(R.id.logout_icon);
 
         // Set onClickListener on the TextView
         textViewSubtitle.setOnClickListener(new View.OnClickListener() {
@@ -91,15 +98,18 @@ public class MainWindow extends AppCompatActivity {
         });
 
 
-        File userDataFile = new File(getFilesDir(), "user_data.json");
+        userDataFile = new File(getFilesDir(), "user_data.json");
         if (userDataFile.exists()) {
             // User is registered, so load the user data and update the TextView with the full name
             try {
+                logout_icon.setVisibility(View.VISIBLE);
+
                 // Read the JSON data from the file
                 FileInputStream fis = new FileInputStream(userDataFile);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
                 StringBuilder userDataJson = new StringBuilder();
                 String line;
+
                 while ((line = reader.readLine()) != null) {
                     userDataJson.append(line);
                 }
@@ -110,7 +120,7 @@ public class MainWindow extends AppCompatActivity {
                 String fullName = userData.getString("firstName") + " " + userData.getString("lastName");
 
                 // Update the TextView with the full name
-                TextView usernameTextView = headerView.findViewById(R.id.usernameTextView);
+                usernameTextView = headerView.findViewById(R.id.usernameTextView);
                 usernameTextView.setText(fullName);
                 // Set text color to white for registered user
                 usernameTextView.setTextColor(getResources().getColor(R.color.registered_color));
@@ -120,44 +130,64 @@ public class MainWindow extends AppCompatActivity {
                 // Handle any errors that may occur during file reading or JSON parsing
             }
         } else {
+            logout_icon.setVisibility(View.INVISIBLE);
+
             // User is not registered, so set the TextView text to "Not registered" in red
-            TextView usernameTextView = headerView.findViewById(R.id.usernameTextView);
+            usernameTextView = headerView.findViewById(R.id.usernameTextView);
             usernameTextView.setText(getString(R.string.nav_header_username));
             usernameTextView.setTextColor(getResources().getColor(R.color.not_registered_color));
         }
 
 
-        // Set the text color of the username TextView
-        String username = getString(R.string.nav_header_username);
-        TextView usernameTextView = headerView.findViewById(R.id.usernameTextView);
+        logout_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (logout_icon.getVisibility() == View.VISIBLE) {
+                    // Build the AlertDialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainWindow.this);
+                    builder.setMessage("Are you sure you want to log out?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Delete the user_data.json file
+                            try {
+                                userDataFile.delete();
+                                logout_icon.setVisibility(View.INVISIBLE);
 
-//        try {
-//            if (!username.toLowerCase().contains("not")) {
-//                // If user is registered, set text color to white
-//                usernameTextView.setTextColor(getResources().getColor(R.color.registered_color));
-//            } else {
-//                // If user is not registered, set text color to red
-//                usernameTextView.setTextColor(getResources().getColor(R.color.not_registered_color));
-//            }
-//        }
-//        catch (Exception e) {
-//            Log.e("Set text color error", "Error: " + e.getMessage(), e);
-//            //e.printStackTrace();
-//        }
+                                usernameTextView = headerView.findViewById(R.id.usernameTextView);
+                                usernameTextView.setText(getString(R.string.nav_header_username));
+                                usernameTextView.setTextColor(getResources().getColor(R.color.not_registered_color));
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Error deleting user data : " + e, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    // Show the AlertDialog
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You are not registered", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
 
         usernameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Check if the user is registered by checking the existence of the user_data.json file
-
                 // String username = getString(R.string.nav_header_username);
 
                 if (usernameTextView.getText().toString().toLowerCase().contains("not")) {
-//                    Intent intent = new Intent(MainWindow.this, RegisterActivity.class);
-//                    startActivity(intent);
                     ClickSignUp();
                 } else {
-                    // Create and show a Toast
                     Toast.makeText(getApplicationContext(), getString(R.string.already_registered), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -180,9 +210,9 @@ public class MainWindow extends AppCompatActivity {
 
     //The method for opening the registration page and another processes or checks for registering
     private void ClickSignUp() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.register, null);
+        dialogBuilder = new AlertDialog.Builder(this);
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.register, null);
         dialogBuilder.setView(dialogView);
 
         reg_username = dialogView.findViewById(R.id.reg_username);
@@ -226,9 +256,7 @@ public class MainWindow extends AppCompatActivity {
                     return; // Exit the method if email is empty
                 }
 
-
                 // If all fields are filled, you can proceed with registration logic here
-                // Example: Store user information in a JSON file
                 try {
                     JSONObject userData = new JSONObject();
                     userData.put("username", reg_username.getText().toString().trim());
@@ -258,11 +286,9 @@ public class MainWindow extends AppCompatActivity {
                     startActivity(intent);
 
                 } catch (JSONException | IOException e) {
-                    e.printStackTrace();
                     // Handle any errors that may occur during file writing or JSON object creation
-                    Toast.makeText(getApplicationContext(), "Error saving user data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error saving user data : " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
