@@ -39,4 +39,6 @@
     <string name="ConfirmEmailAddress">Confirm Email Address</string>
     <string name="SignUp">Sign Up</string>
     <string name="registrationPage">Registration</string>
+    <string name="no_files_found">NO FILES FOUND</string>
+    <string name="documents">Documents</string>
 </resources>

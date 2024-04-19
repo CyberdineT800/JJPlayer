@@ -31,7 +31,8 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="10dp"
             android:scaleType="center"
-            android:src="@drawable/baseline_arrow_circle_right_24">
+            android:padding="5dp"
+            android:src="@drawable/baseline_exit_to_app_24">
         </ImageView>
 
         <TextView
