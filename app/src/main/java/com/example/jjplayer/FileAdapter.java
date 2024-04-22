@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.util.Stack;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     Context context;
     File[] filesAndFolders;
+    private Stack<File> folderStack = new Stack<>();
 
     public FileAdapter (Context context, File[] files) {
         this.context = context;
@@ -38,22 +40,18 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
             holder.fileicon.setImageResource(R.drawable.baseline_folder_24);
         } else {
             String filename = selectedFile.getName();
-            String extension = filename.substring(filename.lastIndexOf(".") + 1);
+            String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
 
-            if (extension.equalsIgnoreCase("zip")) {
-                // Zip file
+            if (extension.equals("zip") || extension.equals("rar")) {
                 holder.fileicon.setImageResource(R.drawable.baseline_folder_zip_24);
             } else if (isAudioFile(extension)) {
-                // Audio file
                 holder.fileicon.setImageResource(R.drawable.baseline_file_audio_24);
             } else if (isVideoFile(extension)) {
-                // Video file
                 holder.fileicon.setImageResource(R.drawable.baseline_file_video_24);
             } else if (isImageFile(extension)) {
-                // Image file
                 holder.fileicon.setImageResource(R.drawable.baseline_file_image_24);
             } else {
-                // Other file types
+                // Set a default icon for other file types
                 holder.fileicon.setImageResource(R.drawable.baseline_file_other_24);
             }
         }
@@ -73,9 +71,16 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         });
     }
 
+
     @Override
     public int getItemCount() {
         return filesAndFolders.length;
+    }
+
+
+    public void setFilesAndFolders(File[] files) {
+        this.filesAndFolders = files;
+        notifyDataSetChanged();
     }
 
 
@@ -92,12 +97,35 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     }
 
 
+//    private void navigateIntoFolder(File folder) {
+//        // Check if the folder exists and is a directory
+//        if (folder.exists() && folder.isDirectory()) {
+//            // Get the list of files and folders inside the selected folder
+//            File[] files = folder.listFiles();
+//            if (files != null || files.length > 0) {
+//                // Update the filesAndFolders array with the contents of the selected folder
+//                filesAndFolders = files;
+//                // Notify the adapter that the data set has changed
+//                notifyDataSetChanged();
+//            } else {
+//                // Handle the case where the folder is empty or cannot be accessed
+//                Toast.makeText(context, "Folder is empty or cannot be accessed", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            // Handle the case where the selected folder does not exist or is not a directory
+//            Toast.makeText(context, "Folder does not exist or is not a directory", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     private void navigateIntoFolder(File folder) {
         // Check if the folder exists and is a directory
         if (folder.exists() && folder.isDirectory()) {
+            // Push the current folder to the stack
+            folderStack.push(folder);
+
             // Get the list of files and folders inside the selected folder
             File[] files = folder.listFiles();
-            if (files != null) {
+            if (files != null && files.length > 0) {
                 // Update the filesAndFolders array with the contents of the selected folder
                 filesAndFolders = files;
                 // Notify the adapter that the data set has changed

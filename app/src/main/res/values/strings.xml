@@ -41,4 +41,7 @@
     <string name="registrationPage">Registration</string>
     <string name="no_files_found">NO FILES FOUND</string>
     <string name="documents">Documents</string>
+    <string name="play_pause">Play_Pause button</string>
+    <string name="previous_track">Previous track button</string>
+    <string name="next_track">Next track button</string>
 </resources>
