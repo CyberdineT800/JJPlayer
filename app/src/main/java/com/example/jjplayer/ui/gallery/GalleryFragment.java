@@ -22,6 +22,7 @@ import com.example.jjplayer.FileAdapter;
 import com.example.jjplayer.FolderHierarchyAdapter;
 import com.example.jjplayer.R;
 import com.example.jjplayer.databinding.FragmentGalleryBinding;
+import com.example.jjplayer.ui.home.HomeFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,11 +50,15 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (!checkPermission()) {
+            requestPermission();
+        }
         CreateFileManager();
 
         String path = Environment.getExternalStorageDirectory().getPath();
         File root = new File(path);
-        File[] files = root.listFiles();
+
         folderStack.add(root);
 
         setupFolderHierarchyRecyclerView();
@@ -67,10 +72,11 @@ public class GalleryFragment extends Fragment {
 
     private void requestPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             Toast.makeText(requireContext(), "Storage permission is required, please allow from settings", Toast.LENGTH_SHORT).show();
         } else {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 111);
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 111);
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
     }
 
@@ -87,6 +93,7 @@ public class GalleryFragment extends Fragment {
         File root = new File(path);
         File[] files = root.listFiles();
         fileAdapter = new FileAdapter(requireContext(), files, this);
+        //fileAdapter.setOnAudioFileSelectedListener(homeFragment);
 
         if (files == null || files.length == 0) {
             noFilestextView.setVisibility(View.VISIBLE);

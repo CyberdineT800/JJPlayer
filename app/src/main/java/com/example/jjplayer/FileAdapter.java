@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jjplayer.ui.gallery.GalleryFragment;
+import com.example.jjplayer.ui.home.HomeFragment;
 
 import java.io.File;
 import java.util.Stack;
@@ -33,6 +34,17 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         View view = LayoutInflater.from(context).inflate(R.layout.file_list_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
+    }
+
+
+    public interface OnAudioFileSelectedListener {
+        void onAudioFileSelected(File audioFile);
+    }
+
+    private OnAudioFileSelectedListener listener;
+
+    public void setOnAudioFileSelectedListener(OnAudioFileSelectedListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -68,6 +80,10 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
                     navigateIntoFolder(selectedFile);
                 } else {
                     Toast.makeText(context, "Folder is empty or cannot be accessed", Toast.LENGTH_SHORT).show();
+                }
+            } else if (isAudioFile(selectedFile.getName().substring(selectedFile.getName().lastIndexOf(".") + 1).toLowerCase())) {
+                if (listener != null) {
+                    listener.onAudioFileSelected(selectedFile);
                 }
             } else {
                 showFileInformation(selectedFile);

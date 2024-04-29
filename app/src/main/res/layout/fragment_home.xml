@@ -28,6 +28,7 @@
         android:padding="20dp"
         android:weightSum="5">
         <ImageButton
+            android:id="@+id/btnRepeat"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,6 +36,7 @@
             android:src="@drawable/ic_repeat"
             android:background="@null"/>
         <ImageButton
+            android:id="@+id/btnPrev"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,6 +44,7 @@
             android:src="@drawable/ic_backward"
             android:background="@null"/>
         <ImageButton
+            android:id="@+id/btnPlay"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +53,7 @@
             android:background="@null"/>
 
         <ImageButton
+            android:id="@+id/btnNext"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +62,7 @@
             android:background="@null"/>
 
         <ImageButton
+            android:id="@+id/btnShuffle"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,6 +95,7 @@
             android:textSize="14sp"
             android:textColor="@color/blue" />
         <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_toLeftOf="@id/tv_full_time"
